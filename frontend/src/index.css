@@ -1,0 +1,13 @@
+:root {
+    --main-color: #54494B; 
+    --side-color: #F1F7ED;
+}
+
+
+
+body {
+    background-color: var(--main-color);
+    font-family: "Montserrat", serif;
+    font-weight: 400;
+    font-style: normal;
+}

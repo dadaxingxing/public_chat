@@ -1,0 +1,15 @@
+:root {
+    --main-color: #54494B; 
+    --side-color: #F1F7ED;
+}
+
+
+.start_button {
+    /* border-width: 0px; */
+    color: var(--main-color);
+    font-size: 40px;
+    font-weight: 700;
+    border-radius: 7px;
+    width: 200px;
+    height: 75px;
+}
