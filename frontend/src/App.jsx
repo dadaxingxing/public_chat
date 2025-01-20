@@ -1,18 +1,22 @@
-import { useState } from 'react'
+import {createBrowserRouter, RouterProvider, UNSAFE_getSingleFetchDataStrategy} from 'react-router-dom'
 import './App.css'
-import Button from './components/button'
+import Home from './pages/Home_page'
+import Chat from './pages/Chat_page'
 
 
-function App() {
-  const [count, setCount] = useState(0)
+function App(){
+    const router = createBrowserRouter([
+        {
+            path: '/', 
+            element: <Home/>,
+        },
+        {
+            path: '/chat',
+            element: <Chat/>,
+        }
+    ])
 
-  return (
-    <div className="container d-flex justify-content-center align-items-center">
-      <div className="text-center">
-        <Button/>
-      </div>
-    </div>
-  )
+    return (
+        <RouterProvider router={router} />
+    );
 }
-
-export default App
