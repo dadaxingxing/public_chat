@@ -3,8 +3,9 @@ import React from 'react';
 
 function InputField( { inputValue, onInputChange, onButtonClick} ) {
     return (
-        <div>
+        <div className='outerContainer'>
             <input
+            className='inputField'
             type="text"
             placeHolder='Send a message'
             onChange={(e) => onInputChange(e.target.value)}
@@ -12,6 +13,7 @@ function InputField( { inputValue, onInputChange, onButtonClick} ) {
             value={inputValue} 
             />
             <button
+            className='sendMessageButton'
             onClick={onButtonClick}>
                 Send
             </button>
