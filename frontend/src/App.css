@@ -1,7 +1,7 @@
 :root {
     --main-color: #54494B; 
     --side-color: #F1F7ED;
-    --darker-main-color: #524A4B;
+    --darker-main-color: #413c3c;
 }
 
 
@@ -24,33 +24,49 @@
     outline: none;
   }
 
-.outerContianer {
-    position: relative;
-    display: inline-block;
-}
+
+  .sendMessageContainer {
+    height: 250%;
+  }
 
 
 .inputField {
-    box-shadow: 7px 7px 2px rgb(0, 0, 0, .2);
-    width: 851px;
-    height: 56px;
+    box-shadow: 0 0 20px 5px rgb(0, 0, 0, .1);
+    width: 100%;
+    height: 100%;
     border-radius: 10px;
     background-color: var(--darker-main-color);
     border: none;
     font-family: "Montserrat", serif;
     font-weight: 600;
+    color: var(--side-color);
+    font-size: 1em; 
+    /* border: .01em solid var(--side-color); */
+    padding-left: 1.5em;
+}
+
+
+.inputField::placeholder{
+    opacity: 1;
     color: var(--side-color)
 }
 
-.sendMessageButton {
-    /* position: absolute; */
-    /* right: 5px; */
-    top: '50%';
-    transform: translate(-100%);
-    height: '70%';
+.sendMessageButton{
+    height: 100%;
+    aspect-ratio: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    right: 0;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.sendMessageButton:hover {
+    transform: scale(1.1);
 }
 
 .sendMessageButton:focus, .inputField:focus {
     outline: none;
 }
+
 

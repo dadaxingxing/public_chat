@@ -3,7 +3,7 @@ import React from 'react';
 
 function InputField( { inputValue, onInputChange, onButtonClick} ) {
     return (
-        <div className='outerContainer'>
+        <div className='position-relative sendMessageContainer'>
             <input
             className='inputField'
             type="text"
@@ -13,9 +13,9 @@ function InputField( { inputValue, onInputChange, onButtonClick} ) {
             value={inputValue} 
             />
             <button
-            className='sendMessageButton'
+            className='sendMessageButton position-absolute'
             onClick={onButtonClick}>
-                Send
+                <img src='arrow.svg' alt='icon' class='icon'/>
             </button>
         </div>
     );
