@@ -4,9 +4,17 @@ import React from 'react';
 
 function Header() {
     return (
-      <div className='navBar'>
-        
-      </div>  
+      <navbar className='navBar d-flex flex-row'>
+        <div className=''>
+          BlorpChat.gg
+
+        </div>
+        <div>
+          <button></button>
+          <button></button>
+        </div>
+
+      </navbar>  
     );
 };
 

@@ -21,15 +21,17 @@ function Chat(){
         }
     }; 
     return (
-        <div className='container mt-5'>
-            <div className='row-12'>
-                <Header/>
+        <div className='container-fluid'>
+            <div className='row'>
+                <div className='header_container col-12'>
+                    <Header/>
+                </div>
             </div>
 
             {/* Displays the message board */}
             <div className='row'>
-                <div className='col-12'>
-                    <div className='input_container'>
+                <div className='col-12 '>
+                    <div className='input_container mx-auto'>
                         {messages.map((message, index) => (
                             <div 
                             key={index}
@@ -39,8 +41,9 @@ function Chat(){
                     </div>
                 </div>
             </div>
+
             <div className='row justify-content-center'>
-                <div className='col-8 '>
+                <div className='col-4 '>
                     {/* Displays the input text button */}
                     <InputField 
                         inputValue={inputValue}
