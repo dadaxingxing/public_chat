@@ -11,6 +11,8 @@ function App(){
             element: <Home/>,
         },
         {
+
+            //todo:  find a way to only allow if indeed there is session
             path: '/chat',
             element: <Chat/>,
         }

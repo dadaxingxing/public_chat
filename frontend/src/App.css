@@ -67,6 +67,18 @@
 
 .sendMessageButton:focus, .inputField:focus {
     outline: none;
+}   
+
+.input_container {
+    height: 70vh;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--darker-main-color) var(--main-color);
 }
 
 
+.navBar {
+    background-color: var(--darker-main-color);
+    width: 6vh;
+
+}

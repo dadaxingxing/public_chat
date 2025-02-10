@@ -1,6 +1,10 @@
 import '../App.css';
 import InputField from '../components/inputField';
+import Header from '../components/Header';
 import { useState } from 'react';
+
+
+
 
 function Chat(){
     const [inputValue, setInputValue] = useState('');
@@ -18,10 +22,14 @@ function Chat(){
     }; 
     return (
         <div className='container mt-5'>
+            <div className='row-12'>
+                <Header/>
+            </div>
+
             {/* Displays the message board */}
-            <div className='row mb-3'>
+            <div className='row'>
                 <div className='col-12'>
-                    <div>
+                    <div className='input_container'>
                         {messages.map((message, index) => (
                             <div 
                             key={index}
@@ -32,7 +40,7 @@ function Chat(){
                 </div>
             </div>
             <div className='row justify-content-center'>
-                <div className='col-8'>
+                <div className='col-8 '>
                     {/* Displays the input text button */}
                     <InputField 
                         inputValue={inputValue}
@@ -41,7 +49,6 @@ function Chat(){
                     />
                 </div>
             </div>
-
         </div>
     );
 }
