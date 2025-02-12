@@ -4,8 +4,6 @@ import Header from '../components/Header';
 import { useState } from 'react';
 
 
-
-
 function Chat(){
     const [inputValue, setInputValue] = useState('');
     const [messages, setMessages] = useState([]);
