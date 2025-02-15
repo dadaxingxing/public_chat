@@ -97,3 +97,23 @@
     font-weight: 600;
     font-size: 1.83vh;
 }
+
+.message_box {
+    border: none;
+    box-shadow: none;  
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-width: 35%;
+} 
+
+.message_box_sender {
+    background-color: var(--side-color);
+    color: var(--darker-main-color);
+}
+
+.message_box_receiver {
+    background-color: var(--darker-main-color);
+    color: var(--side-color);
+    
+}

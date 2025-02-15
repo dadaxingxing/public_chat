@@ -1,6 +1,7 @@
 import '../App.css';
 import InputField from '../components/inputField';
 import Header from '../components/Header';
+import Message from '../components/Message';
 import { useState } from 'react';
 
 
@@ -14,7 +15,7 @@ function Chat(){
 
     const handleSubmitClick = () => {
         if (inputValue.trim() !== ''){
-            setMessages((prevMessages) => [...prevMessages, inputValue]);
+            setMessages([...messages, { text: inputValue, isSender: true}]);
             setInputValue('');
         }
     }; 
@@ -31,10 +32,11 @@ function Chat(){
                 <div className='col-12 '>
                     <div className='input_container mx-auto'>
                         {messages.map((message, index) => (
-                            <div 
-                            key={index}
-                            >{message}
-                            </div>
+                            <Message
+                                text={message.text}
+                                isSender={message.isSender}
+                                key={index}
+                            />
                         ))}
                     </div>
                 </div>
