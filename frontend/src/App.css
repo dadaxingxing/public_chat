@@ -73,10 +73,10 @@
     width: 75%;
     height: 70vh;
     overflow: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--darker-main-color) var(--main-color);
+    scrollbar-width: none;
 
 }
+
 
 
 .navBar {
