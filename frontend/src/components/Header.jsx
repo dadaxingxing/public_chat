@@ -1,6 +1,7 @@
 import '../App.css';
+import Active from './activeButton.jsx';
+import Referral from './referralButton.jsx';
 import React from 'react';
-
 
 function Header() {
     return (
@@ -8,9 +9,9 @@ function Header() {
         <div className='logo'>
           BlorpChat.gg
         </div>
-        <div>
-          <button className='btn-lg'></button>
-          <button className='btn-lg'></button>
+        <div className=' d-flex align-items-horizontal'>
+          <Active/>
+          <Referral/>
         </div>
 
       </navbar>  

@@ -15,7 +15,7 @@ function Chat(){
 
     const handleSubmitClick = () => {
         if (inputValue.trim() !== ''){
-            setMessages([...messages, { text: inputValue, isSender: true}]);
+            setMessages([...messages, { text: inputValue, isSender: true  }]);
             setInputValue('');
         }
     }; 

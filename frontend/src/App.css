@@ -2,6 +2,8 @@
     --main-color: #54494B; 
     --side-color: #F1F7ED;
     --darker-main-color: #413c3c;
+    --green: #91C7B1;
+    --red: #B33951;
 }
 
 
@@ -75,6 +77,8 @@
     overflow: auto;
     scrollbar-width: none;
 
+    scrollbar-color: var(--darker-main-color) var(--main-color);
+
 }
 
 
@@ -116,4 +120,21 @@
     background-color: var(--darker-main-color);
     color: var(--side-color);
     
+}
+
+.greenStatus {
+    border-radius: 10px;
+    width: 5px;
+    height: 5px;
+    background-color: var(--green);
+
+}
+
+
+.redStatus {
+    border-radius: 10px;
+    width: 5px;
+    height: 5px;
+    background-color: var(--red);
+
 }
