@@ -9,7 +9,7 @@ function Header() {
         <div className='logo'>
           BlorpChat.gg
         </div>
-        <div className=' d-flex align-items-horizontal'>
+        <div className='header_buttons_container d-flex align-items-center'>
           <Active/>
           <Referral/>
         </div>

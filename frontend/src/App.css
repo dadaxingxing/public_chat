@@ -72,7 +72,7 @@
 }   
 
 .input_container {
-    width: 75%;
+    width: 50%;
     height: 70vh;
     overflow: auto;
     scrollbar-width: none;
@@ -88,6 +88,10 @@
     width: 100%;
     height: 100%;
     box-shadow: 0 0 20px .1px rgb(0, 0, 0, .5);
+}
+
+.header_buttons_container {
+    gap: 1vw; 
 }
 
 .header_container {
@@ -137,4 +141,21 @@
     height: 5px;
     background-color: var(--red);
 
+}
+
+
+.statusText {
+    font-weight: 600;
+}
+
+.status_container {
+    background-color: var(--side-color);
+    width: 10vw;
+    gap: 5;
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
 }

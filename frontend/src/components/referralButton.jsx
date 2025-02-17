@@ -5,7 +5,7 @@ import React from 'react';
 const Referral = () => {
 
     return (
-        <div className='btn btn-light d-flex align-items-center gap-4'>
+        <div className='status_container btn btn-light'>
             <div className='redStatus'/>
             <div className='statusText'>
                 Referral a friend
