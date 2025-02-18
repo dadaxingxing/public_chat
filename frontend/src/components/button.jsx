@@ -1,9 +1,17 @@
+import { GoogleOAuthProvider, GoogleLogin, useGoogleLogin  } from '@react-oauth/google';
 import '../App.css';
 
+const Button = ({ onSuccess }) => {
 
-const Button = ({onClick, children}) => {
+    const login = useGoogleLogin({
+        onSuccess: (response) => {
+            onSuccess(response.access_token);
+        },
+        onError: () => console.log('Google Auth Failed!'),
+    });
+
     return (
-        <button className='start_button' onClick={onClick}>start</button>
+        <button className='start_button' onClick={login}>start</button>
     );
 }
 

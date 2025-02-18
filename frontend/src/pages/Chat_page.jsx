@@ -23,6 +23,7 @@ function Chat(){
         <div className='container-fluid'>
             <div className='row'>
                 <div className='header_container col-12'>
+                    {/* Todo: Make the feature buttons more responsive */}
                     <Header/>
                 </div>
             </div>
