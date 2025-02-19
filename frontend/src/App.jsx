@@ -1,25 +1,19 @@
-import {createBrowserRouter, RouterProvider, UNSAFE_getSingleFetchDataStrategy} from 'react-router-dom'
+import {createBrowserRouter, RouterProvider, BrowserRouter, Routes, Route} from 'react-router-dom'
 import './App.css'
 import Home from './pages/Home_page'
 import Chat from './pages/Chat_page'
-
+import SecureRoute from './components/ProtectedRoute'
 
 function App(){
-    const router = createBrowserRouter([
-        {
-            path: '/', 
-            element: <Home/>,
-        },
-        {
-
-            //todo:  find a way to only allow if indeed there is session
-            path: '/chat',
-            element: <Chat/>,
-        }
-    ])
-
     return (
-        <RouterProvider router={router} />
+        <BrowserRouter>
+            <Routes>
+                <Route element={<Home/>} path='/'></Route>
+                <Route element={<SecureRoute/>}>
+                    <Route element={<Chat/>} path='/chat'></Route>
+                </Route>
+            </Routes>
+        </BrowserRouter>
     );
 }
 

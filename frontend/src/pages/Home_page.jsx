@@ -10,9 +10,6 @@ const storeToken = async (token) => {
 
 
 function Home() {
-  const navigate = useNavigate();
-
-
 
   return (
     <div className="container vh-100 d-flex justify-content-center align-items-center">

@@ -5,7 +5,7 @@ import React from 'react';
 
 function Header() {
     return (
-      <navbar className='navBar d-flex justify-content-between align-items-center px-5'>
+      <div className='navBar d-flex justify-content-between align-items-center px-5'>
         <div className='logo'>
           BlorpChat.gg
         </div>
@@ -14,7 +14,7 @@ function Header() {
           <Referral/>
         </div>
 
-      </navbar>  
+      </div>  
     );
 };
 

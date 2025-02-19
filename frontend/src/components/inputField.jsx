@@ -7,7 +7,7 @@ function InputField( { inputValue, onInputChange, onButtonClick} ) {
             <input
             className='inputField'
             type="text"
-            placeHolder='Send a message'
+            placeholder='Send a message'
             onChange={(e) => onInputChange(e.target.value)}
             onKeyDown={(e) => {if (e.key === 'Enter') onButtonClick();} }
             value={inputValue} 
@@ -15,7 +15,7 @@ function InputField( { inputValue, onInputChange, onButtonClick} ) {
             <button
             className='sendMessageButton position-absolute'
             onClick={onButtonClick}>
-                <img src='arrow.svg' alt='icon' class='icon'/>
+                <img src='arrow.svg' alt='icon' className='icon'/>
             </button>
         </div>
     );
