@@ -3,7 +3,7 @@ import {useState, useEffect} from 'react';
 import axios from "axios";
 
 
-const SecureRoute = () => {
+const SecureRoute = ( { reverse = false} ) => {
     const [isValid, setIsValid] = useState(null);
     const token = localStorage.getItem('token');
 
@@ -15,8 +15,15 @@ const SecureRoute = () => {
             .catch(() => setIsValid(false))
     }, [token]);
     
-    return isValid === null ? <div className="spinner-grow text-primary" role="status"></div>
-    : isValid ? <Outlet/> : <Navigate to='/'/>;
+    if (isValid === null){
+        return <div className="spinner-grow text-primary" role="status"/>
+    };
+
+    if (!reverse){
+        return  isValid ? <Outlet/> : <Navigate to='/'/>;
+    } else {
+        return isValid ? <Navigate to='/chat'/> : <Outlet/>;
+    }
 
 };
 

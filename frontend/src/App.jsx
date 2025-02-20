@@ -8,7 +8,10 @@ function App(){
     return (
         <BrowserRouter>
             <Routes>
-                <Route element={<Home/>} path='/'></Route>
+                <Route element={<SecureRoute reverse/>}>
+                    <Route element={<Home/>} path='/'></Route>
+                </Route>
+
                 <Route element={<SecureRoute/>}>
                     <Route element={<Chat/>} path='/chat'></Route>
                 </Route>
