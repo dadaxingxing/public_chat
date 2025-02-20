@@ -150,7 +150,7 @@
 
 .status_container {
     background-color: var(--side-color);
-    width: 10vw;
+    width: 200px;
     gap: 5;
     border-radius: 20px;
 
@@ -158,4 +158,5 @@
     align-items: center;
     justify-content: center;
     gap: 3px;
+    white-space: nowrap;
 }

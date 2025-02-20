@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Message from '../components/Message';
 import { useState } from 'react';
 
+console.log(localStorage.getItem('token'));
 
 function Chat(){
     const [inputValue, setInputValue] = useState('');
