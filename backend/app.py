@@ -7,7 +7,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 from functools import wraps
 import requests
-
+from flask_cors import CORS
 
 google_client_id = dotenv_values('login.env')['CLIENT_ID']
 client = MongoClient('mongodb://localhost:27017')
@@ -17,6 +17,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = dotenv_values('login.env')['SECRET_KEY']
 socketio = SocketIO(app)
 
+
+# allowing access at specific host
+CORS(app)
 
 def auth(func):
     @wraps(func)
@@ -73,6 +76,7 @@ def chat(user):
 
     return jsonify({'message': 'Message insert complete!'}), 200
 
+# remember to delete the line below
 if __name__ == '__main__':
     socketio.run(app, debug=True)
 
