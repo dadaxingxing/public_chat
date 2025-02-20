@@ -1,8 +1,7 @@
 from flask import Flask, request, session, jsonify
 from flask_socketio import join_room, leave_room, send, SocketIO
 from pymongo import MongoClient
-from datetime import datetime
-import jwt
+from datetime import datetime, timezone
 from dotenv import dotenv_values
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
@@ -22,7 +21,7 @@ socketio = SocketIO(app)
 def auth(func):
     @wraps(func)
     def decorated_function(*args, **kws):
-        auth_header = request.headers.get('Authorization')
+        auth_header = request.headers.get('Token')
 
         if not auth_header:
             return jsonify({'error': 'Missing Token'}), 400
@@ -58,20 +57,21 @@ def history(user):
 @app.route('/api/chat', methods=['POST'])
 @auth
 def chat(user):
-    data = request.get_json()
-    userId = data.get('userId')
-    message = data.get('message')
-    
-    if not userId or not message:
-        return jsonify({'error': 'User ID and a message is required!'}), 400
+    data = request.json
+    message = data['Message']
+
+    if not user or not message:
+        return jsonify({'error': 'Did not receive userID or message'}), 400
 
     message_data = {
-        'userId': userId,
+        'userId': user,
         'message': message,
-        'timestamp': datetime.utcnow().isoformat()
+        'timestamp': datetime.now(timezone.utc).isoformat()
     }
+
     db.messages.insert_one(message_data)
 
+    return jsonify({'message': 'Message insert complete!'}), 200
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
