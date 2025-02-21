@@ -5,7 +5,7 @@ import axios from "axios";
 
 const SecureRoute = ( { reverse = false} ) => {
     const [isValid, setIsValid] = useState(null);
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('Token');
 
     useEffect(() => {
         if (!token) return setIsValid(false);

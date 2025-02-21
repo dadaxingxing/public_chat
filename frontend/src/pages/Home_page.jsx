@@ -9,7 +9,7 @@ function Home() {
   const navigate = useNavigate();
   
   const handleLogin = async (token) => {
-    localStorage.setItem('token', token);
+    localStorage.setItem('Token', token);
     navigate('/chat');
   
   }

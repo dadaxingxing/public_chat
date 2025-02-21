@@ -29,7 +29,7 @@ def auth(func):
         if not auth_header:
             return jsonify({'error': 'Missing Token'}), 400
 
-        token = auth_header.split()[-1]
+        token = auth_header
         try:
             response = requests.get(
                 'https://www.googleapis.com/oauth2/v3/userinfo',

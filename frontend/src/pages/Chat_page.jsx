@@ -3,8 +3,11 @@ import InputField from '../components/inputField';
 import Header from '../components/Header';
 import Message from '../components/Message';
 import { useState } from 'react';
+import axiosInstance from '../utilities/axiosConfig';
 
-console.log(localStorage.getItem('token'));
+
+// remember to delete the below line, it's for debugging
+console.log(localStorage.getItem('Token'));
 
 function Chat(){
     const [inputValue, setInputValue] = useState('');
@@ -14,9 +17,20 @@ function Chat(){
         setInputValue(value);
     };
 
-    const handleSubmitClick = () => {
+    const handleSubmitClick = async () => {
         if (inputValue.trim() !== ''){
-            setMessages([...messages, { text: inputValue, isSender: true  }]);
+            // setMessages([...messages, { text: inputValue, isSender: true  }]);
+            try {
+                const response = await axiosInstance.post('/api/chat', {
+                    "Message": inputValue,
+
+                });
+
+                console.log('Message sent!');
+            } catch (error) {
+                console.log('Error sending message!')
+            }           
+
             setInputValue('');
         }
     }; 
@@ -24,7 +38,6 @@ function Chat(){
         <div className='container-fluid'>
             <div className='row'>
                 <div className='header_container col-12'>
-                    {/* Todo: Make the feature buttons more responsive */}
                     <Header/>
                 </div>
             </div>
