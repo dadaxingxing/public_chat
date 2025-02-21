@@ -4,14 +4,17 @@
     --darker-main-color: #413c3c;
     --green: #91C7B1;
     --red: #B33951;
+    --normal: 500;
+    --bold: 600;
 }
 
 
 .start_button {
     /* border-width: 0px; */
+    background-color: var(--side-color);
     color: var(--main-color);
     font-size: 40px;
-    font-weight: 700;
+    font-weight: 600;
     border-radius: 7px;
     width: 200px;
     height: 75px;
@@ -26,11 +29,53 @@
     outline: none;
   }
 
+.start_button:focus {
+    outline: none;
+    border: 2px, solid, var(--darker-main-color);
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.01);
+}
 
   .sendMessageContainer {
     height: 250%;
   }
 
+
+.lower {
+    color: var(--side-color);
+    font-size: 7vw;
+    font-weight: var(--normal);
+}
+
+.lower_container {
+    gap: 16px;
+}
+
+.lower_underline {
+    text-decoration-thickness: 5px; 
+    text-underline-offset: 8px;
+    text-decoration-color: var(--side-color);
+}   
+
+
+.middle {
+    color: var(--side-color);
+    font-weight: var(--bold);
+    font-size: 24vw;
+    
+}
+
+
+.top {
+    font-weight: var(--bold);
+    color: var(--side-color);
+    font-size: 2.08vw;
+    transform: translateY(3px);
+}
+
+.middle_container {
+    line-height: .8;
+}
+/* chat page start here */
 
 .inputField {
     box-shadow: 0 0 20px 5px rgb(0, 0, 0, .1);
