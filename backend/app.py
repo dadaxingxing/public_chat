@@ -8,6 +8,9 @@ from google.auth.transport import requests as google_requests
 from functools import wraps
 import requests
 from flask_cors import CORS
+from bson.json_util import dumps
+
+
 
 google_client_id = dotenv_values('login.env')['CLIENT_ID']
 client = MongoClient('mongodb://localhost:27017')
@@ -53,9 +56,13 @@ def auth(func):
 @app.route('/api/history', methods=['GET'])
 @auth
 def history(user):
-    messages = list(db.messages.find({}, {'_id': 0}))
-    return jsonify({'messages': messages})
-
+    try:
+            
+        messages = db.messages.find({}).sort('timestamp', 1)
+        return dumps(messages), 200
+    
+    except Exception as e:
+        return jsonify({'error': f'{e}'}), 400
 
 @app.route('/api/chat', methods=['POST'])
 @auth

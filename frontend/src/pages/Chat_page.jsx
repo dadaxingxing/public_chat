@@ -2,17 +2,32 @@ import '../App.css';
 import InputField from '../components/inputField';
 import Header from '../components/Header';
 import Message from '../components/Message';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
 import axiosInstance from '../utilities/axiosConfig';
 
 
 // remember to delete the below line, it's for debugging
-console.log(localStorage.getItem('Token'));
+// localStorage.clear();
+// console.log(localStorage.getItem('userId'));
 
 function Chat(){
     const [inputValue, setInputValue] = useState('');
     const [messages, setMessages] = useState([]);
 
+    useEffect(() => {
+        axiosInstance.get('/api/history')
+            .then(response => {
+                const messages = response.data;
+
+                messages.map((message) => {
+                    setMessages(prevMessage => [...prevMessage, { text: message['message'], isSender: localStorage.getItem('userId') === message['userId']}])
+                });
+            })
+
+    }, []);
+
+    
     const handleInputChanges = (value) => {
         setInputValue(value);
     };

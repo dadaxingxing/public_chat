@@ -2,6 +2,7 @@ import '../App.css'
 import Button from '../components/button'
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import axios from 'axios';
 
 
 function Home() {
@@ -9,7 +10,12 @@ function Home() {
   const navigate = useNavigate();
   
   const handleLogin = async (token) => {
+    axios.get(`https://www.googleapis.com/oauth2/v3/userinfo`, {headers : {Authorization: `Bearer ${token}`}})
+      .then( response => localStorage.setItem('userId', response.data.email))
+      .catch( error => {console.log('Error fetching userId', error)});
+
     localStorage.setItem('Token', token);
+
     navigate('/chat');
   
   }
