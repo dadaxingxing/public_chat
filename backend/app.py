@@ -11,7 +11,6 @@ from flask_cors import CORS
 from bson.json_util import dumps
 
 
-
 google_client_id = dotenv_values('login.env')['CLIENT_ID']
 client = MongoClient('mongodb://localhost:27017')
 db = client.public_chat
@@ -57,7 +56,6 @@ def auth(func):
 @auth
 def history(user):
     try:
-            
         messages = db.messages.find({}).sort('timestamp', 1)
         return dumps(messages), 200
     
