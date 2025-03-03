@@ -56,7 +56,15 @@ def auth(func):
 @auth
 def history(user):
     try:
-        messages = db.messages.find({}).sort('timestamp', 1)
+        incoming_data = request.args
+        page = int(incoming_data.get('page', 1))
+        limit = int(incoming_data.get('limit', 25))
+        
+        messages = list(db.messages.find({})
+                        .sort('timestamp', 1)
+                        .skip((page - 1) * limit)
+                        .limit(limit))
+
         return dumps(messages), 200
     
     except Exception as e:
@@ -80,6 +88,7 @@ def chat(user):
     db.messages.insert_one(message_data)
 
     return jsonify({'message': 'Message insert complete!'}), 200
+
 
 # remember to delete the line below
 if __name__ == '__main__':

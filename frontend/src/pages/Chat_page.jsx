@@ -3,7 +3,6 @@ import InputField from '../components/inputField';
 import Header from '../components/Header';
 import Message from '../components/Message';
 import { useState, useEffect, useRef } from 'react';
-
 import axiosInstance from '../utilities/axiosConfig';
 
 
@@ -11,38 +10,72 @@ import axiosInstance from '../utilities/axiosConfig';
 // localStorage.clear();
 // console.log(localStorage.getItem('userId'));
 
+
 function Chat(){
     const [inputValue, setInputValue] = useState('');
     const [messages, setMessages] = useState([]);
     const messageBox = useRef(null);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const userId = localStorage.getItem('userId');
+    const [loading, setLoading] = useState(false);
+
     
-    // handle getting past message history
-    useEffect(() => {
-        axiosInstance.get('/api/history')
-            .then(response => {
-                setMessages(response.data.map(message => ({
-                    text: message['message'],
-                    isSender: localStorage.getItem('userId') === message['userId']
-                })));
-            })
-            .catch(error => console.error("Error fetching messages:", error));
-    }, []);
+    // get more message history from backend based on page number
+    const loadMoreMessages = async () => {
+        if (!hasMore || loading) return;
+
+        setLoading(true);
+        try {
+            const response = await axiosInstance.get('/api/history', {params: {page}});
+
+            if (response.data.length === 0) {
+                setHasMore(false);
+                return
+            }
+            
+            setMessages(prevMessages => [
+                ...prevMessages, 
+                ...response.data.map(newMessage => ({
+                    text: newMessage.message,
+                    isSender: userId === newMessage.userId
+                }))
+            ]);
+    
+            setPage(page => page + 1);
+
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Listens when user scrolls to top
+    const handleScroll = (e) => {
+        const bottom = e.target.scrollTop <= 10;
+        if (bottom){
+            console.log('trying to load more messages!!')
+            loadMoreMessages();
+        }   
+    };
+    
 
     // handle userInput
     const handleInputChanges = (value) => {
         setInputValue(value);
     };
-
-
+    
+    
     // handle submitting a message
     const handleSubmitClick = async () => {
         if (inputValue.trim() !== ''){
             try {
                 const response = await axiosInstance.post('/api/chat', {
                     "Message": inputValue,
-
+                    
                 });
-
+                
             } catch (error) {
                 console.log('Error sending message!')
             }           
@@ -51,6 +84,7 @@ function Chat(){
         }
     }; 
 
+    
     // handle scrolling to the bottom
     const scrollToBottom = () => {
         if (messageBox.current) {
@@ -58,14 +92,20 @@ function Chat(){
                 messageBox.current.scrollTop = messageBox.current.scrollHeight;
             });
         }
-
+        
     };
-
-    // update message box everytime messages is appended
+    
+    // handle getting inital message history
     useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
+        const fetchMessages = async () => {
+            await loadMoreMessages();
+            scrollToBottom();
+        };
+        console.log('inital loading messages');
+        fetchMessages();
 
+    }, []);
+    
     return (
         <div className='container-fluid'>
             <div className='row'>
@@ -77,7 +117,7 @@ function Chat(){
             {/* Displays the message board */}
             <div className='row'>
                 <div className='col-12 '>
-                    <div className='input_container mx-auto' ref={messageBox}>
+                    <div className='input_container mx-auto' onScroll={handleScroll} ref={messageBox}>
                         {messages.map((message, index) => (
                             <Message
                                 text={message.text}
