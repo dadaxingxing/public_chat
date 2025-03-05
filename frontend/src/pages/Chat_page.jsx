@@ -93,7 +93,9 @@ function Chat(){
     // handle getting inital message history
     useEffect(() => {
         loadMoreMessagesHistory();
-        messageBox.current.scrollTop = messageBox.current.scrollHeight;
+        setTimeout(() => {
+            messageBox.current.scrollTop = messageBox.current.scrollHeight;
+        }, 300);
     }, []);
 
 
