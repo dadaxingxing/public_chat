@@ -92,10 +92,14 @@ function Chat(){
     
     // handle getting inital message history
     useEffect(() => {
-        loadMoreMessagesHistory();
+        const fetchMessages = async () => {
+            await loadMoreMessagesHistory();
+        };
+        fetchMessages();
+        
         setTimeout(() => {
             messageBox.current.scrollTop = messageBox.current.scrollHeight;
-        }, 300);
+        }, 500);
     }, []);
 
 
