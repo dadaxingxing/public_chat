@@ -22,7 +22,7 @@ function Chat(){
 
     
     // get more message history from backend based on page number
-    const loadMoreMessages = async () => {
+    const loadMoreMessagesHistory = async () => {
         if (!hasMore || loading) return;
 
         setLoading(true);
@@ -35,11 +35,12 @@ function Chat(){
             }
             
             setMessages(prevMessages => [
-                ...prevMessages, 
                 ...response.data.map(newMessage => ({
                     text: newMessage.message,
                     isSender: userId === newMessage.userId
-                }))
+                })),
+
+                ...prevMessages
             ]);
     
             setPage(page => page + 1);
@@ -49,14 +50,16 @@ function Chat(){
         } finally {
             setLoading(false);
         }
+
+
     };
 
     // Listens when user scrolls to top
     const handleScroll = (e) => {
-        const bottom = e.target.scrollTop <= 10;
+        const bottom = e.target.scrollTop === 0;
         if (bottom){
             console.log('trying to load more messages!!')
-            loadMoreMessages();
+            loadMoreMessagesHistory();
         }   
     };
     
@@ -85,27 +88,15 @@ function Chat(){
     }; 
 
     
-    // handle scrolling to the bottom
-    const scrollToBottom = () => {
-        if (messageBox.current) {
-            requestAnimationFrame( () => {
-                messageBox.current.scrollTop = messageBox.current.scrollHeight;
-            });
-        }
-        
-    };
+    
     
     // handle getting inital message history
     useEffect(() => {
-        const fetchMessages = async () => {
-            await loadMoreMessages();
-            scrollToBottom();
-        };
-        console.log('inital loading messages');
-        fetchMessages();
-
+        loadMoreMessagesHistory();
+        messageBox.current.scrollTop = messageBox.current.scrollHeight;
     }, []);
-    
+
+
     return (
         <div className='container-fluid'>
             <div className='row'>

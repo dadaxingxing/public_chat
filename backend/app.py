@@ -61,11 +61,11 @@ def history(user):
         limit = int(incoming_data.get('limit', 25))
         
         messages = list(db.messages.find({})
-                        .sort('timestamp', 1)
+                        .sort('timestamp', -1)
                         .skip((page - 1) * limit)
                         .limit(limit))
 
-        return dumps(messages), 200
+        return dumps(messages[::-1]), 200
     
     except Exception as e:
         return jsonify({'error': f'{e}'}), 400
