@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import Message from '../components/Message';
 import { useState, useEffect, useRef } from 'react';
 import axiosInstance from '../utilities/axiosConfig';
-
+import {io} from 'socket.io-client';
 
 // remember to delete the below line, it's for debugging
 // localStorage.clear();
@@ -19,12 +19,13 @@ function Chat(){
     const [hasMore, setHasMore] = useState(true);
     const userId = localStorage.getItem('userId');
     const [loading, setLoading] = useState(false);
-
+    const socket = io('http://127.0.0.1:5000')
+    
     
     // get more message history from backend based on page number
     const loadMoreMessagesHistory = async () => {
         if (!hasMore || loading) return;
-
+        
         setLoading(true);
         try {
             const response = await axiosInstance.get('/api/history', {params: {page}});
@@ -39,10 +40,10 @@ function Chat(){
                     text: newMessage.message,
                     isSender: userId === newMessage.userId
                 })),
-
+                
                 ...prevMessages
             ]);
-    
+            
             setPage(page => page + 1);
 
         } catch (error) {
@@ -50,10 +51,10 @@ function Chat(){
         } finally {
             setLoading(false);
         }
-
-
+        
+        
     };
-
+    
     // Listens when user scrolls to top
     const handleScroll = (e) => {
         const bottom = e.target.scrollTop === 0;
@@ -63,7 +64,7 @@ function Chat(){
         }   
     };
     
-
+    
     // handle userInput
     const handleInputChanges = (value) => {
         setInputValue(value);
@@ -73,20 +74,19 @@ function Chat(){
     // handle submitting a message
     const handleSubmitClick = async () => {
         if (inputValue.trim() !== ''){
-            try {
-                const response = await axiosInstance.post('/api/chat', {
-                    "Message": inputValue,
-                    
-                });
-                
-            } catch (error) {
-                console.log('Error sending message!')
-            }           
 
+            try {
+                await axiosInstance.post('/api/chat', {"Message": inputValue});
+                
+                socket.emit('new_chat_message', {'message': inputValue, 'userId':userId});
+
+            } catch (error) {
+                console.log('Error sending message:', error)
+            }           
+            
             setInputValue('');
         }
     }; 
-
     
     
     
@@ -94,12 +94,26 @@ function Chat(){
     useEffect(() => {
         const fetchMessages = async () => {
             await loadMoreMessagesHistory();
+
+            setTimeout(() => {
+                messageBox.current.scrollTop = messageBox.current.scrollHeight;
+            }, 500);
         };
+
         fetchMessages();
+
         
-        setTimeout(() => {
+        const handleMessage = (data) => {
+            setMessages((prevMessages) => [...prevMessages, { text: data.message, isSender: data.userId === userId}])
             messageBox.current.scrollTop = messageBox.current.scrollHeight;
-        }, 500);
+        };
+        
+        socket.on('new_chat_message', handleMessage);
+
+        return () => {
+            socket.off('new_chat_message', handleMessage);
+            socket.disconnect();
+        };
     }, []);
 
 

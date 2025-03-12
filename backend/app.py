@@ -1,5 +1,5 @@
 from flask import Flask, request, session, jsonify
-from flask_socketio import join_room, leave_room, send, SocketIO
+from flask_socketio import join_room, leave_room, send, SocketIO, emit
 from pymongo import MongoClient
 from datetime import datetime, timezone
 from dotenv import dotenv_values
@@ -17,11 +17,12 @@ db = client.public_chat
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = dotenv_values('login.env')['SECRET_KEY']
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 # allowing access at specific host
 CORS(app)
+
 
 def auth(func):
     @wraps(func)
@@ -52,23 +53,14 @@ def auth(func):
     
     return decorated_function
 
-@app.route('/api/history', methods=['GET'])
-@auth
-def history(user):
-    try:
-        incoming_data = request.args
-        page = int(incoming_data.get('page', 1))
-        limit = int(incoming_data.get('limit', 25))
-        
-        messages = list(db.messages.find({})
-                        .sort('timestamp', -1)
-                        .skip((page - 1) * limit)
-                        .limit(limit))
 
-        return dumps(messages[::-1]), 200
-    
-    except Exception as e:
-        return jsonify({'error': f'{e}'}), 400
+@socketio.on('new_chat_message')
+def handle_sending_new_message(data):
+    message = data['message']
+    userId = data['userId']
+
+    emit('new_chat_message', {'message': message, 'userId': userId}, broadcast=True)
+
 
 @app.route('/api/chat', methods=['POST'])
 @auth
@@ -88,6 +80,26 @@ def chat(user):
     db.messages.insert_one(message_data)
 
     return jsonify({'message': 'Message insert complete!'}), 200
+
+@app.route('/api/history', methods=['GET'])
+@auth
+def history(user):
+    try:
+        incoming_data = request.args
+        page = int(incoming_data.get('page', 1))
+        limit = int(incoming_data.get('limit', 25))
+        
+        messages = list(db.messages.find({})
+                        .sort('timestamp', -1)
+                        .skip((page - 1) * limit)
+                        .limit(limit))
+
+        return dumps(messages[::-1]), 200
+    
+    except Exception as e:
+        return jsonify({'error': f'{e}'}), 400
+
+
 
 
 # remember to delete the line below
