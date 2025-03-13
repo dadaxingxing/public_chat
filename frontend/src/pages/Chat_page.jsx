@@ -23,7 +23,7 @@ function Chat(){
 
     // get more message history from backend based on page number
     const loadMoreMessagesHistory = async () => {
-        if (!hasMore || loading) return;
+        if (!hasMore) return;
 
         try {
             const response = await axiosInstance.get('/api/history', {params: {page}});
@@ -46,11 +46,7 @@ function Chat(){
 
         } catch (error) {
             console.error('Error fetching messages:', error);
-        } finally {
-            setLoading(false);
-        }
-        
-        
+        }  
     };
     
     // Listens when user scrolls to top
@@ -59,11 +55,17 @@ function Chat(){
         if (top && !loading){
             console.log('trying to load more messages!!')
             setLoading(true);
-            loadMoreMessagesHistory();
         }   
     };
     
-    
+    useEffect(() => {
+        if (loading){
+            loadMoreMessagesHistory();
+        }
+
+    }, [loading]);
+
+
     // handle userInput
     const handleInputChanges = (value) => {
         setInputValue(value);
@@ -87,8 +89,7 @@ function Chat(){
         }
     }; 
     
-    
-    
+
     // handle getting inital message history
     useEffect(() => {
         loadMoreMessagesHistory();
@@ -108,10 +109,11 @@ function Chat(){
 
 
     useEffect(() => {
-        if (!loading){
-            scrollRef.current?.scrollIntoView({ behavior: 'smooth'});
+        if (!loading) {
+            scrollRef.current?.scrollIntoView({ behavior: 'smooth'});    
         }
-    }, [messages, loading]);
+        setLoading(false);
+    }, [messages]);
 
     return (
         <div className='container-fluid'>
