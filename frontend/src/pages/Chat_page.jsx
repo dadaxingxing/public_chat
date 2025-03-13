@@ -17,9 +17,14 @@ function Chat(){
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
-    const socket = io('http://127.0.0.1:5000')
     const scrollRef = useRef(null);
     const [messageSendStatus, setMessageSendStatus] = useState(true);
+    const socket = io('http://127.0.0.1:5000', {
+        extraHeaders: {
+            'Token': localStorage.getItem('Token')
+        }
+    });
+
     
 
     // get more message history from backend based on page number
@@ -63,7 +68,6 @@ function Chat(){
         if (loading){
             loadMoreMessagesHistory();
         }
-
     }, [loading]);
 
 
@@ -104,6 +108,10 @@ function Chat(){
         };
         
         socket.on('new_chat_message', handleMessage);
+        socket.on('connect_error', (err) => {
+            console.log(`Connection failed, ${err}`);
+        });
+
 
         return () => {
             socket.off('new_chat_message', handleMessage);

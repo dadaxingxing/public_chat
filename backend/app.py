@@ -1,5 +1,5 @@
 from flask import Flask, request, session, jsonify
-from flask_socketio import join_room, leave_room, send, SocketIO, emit
+from flask_socketio import disconnect, join_room, leave_room, send, SocketIO, emit
 from pymongo import MongoClient
 from datetime import datetime, timezone
 from dotenv import dotenv_values
@@ -52,6 +52,36 @@ def auth(func):
         return func(user_email, *args, **kws)
     
     return decorated_function
+
+@socketio.on('connect')
+def handle_connect():
+    token = request.headers.get('Token')
+    if not token:
+        print('Token is  missing')
+        disconnect()
+        return
+
+    try:
+
+        response = requests.get(
+            'https://www.googleapis.com/oauth2/v3/userinfo',
+            headers={'Authorization': f'Bearer {token}'}
+        )
+
+        if response.status_code != 200:
+            print("Invalid Token or Token Expired")
+            disconnect()
+            return
+        
+        user_info = response.json()
+        user_email = user_info['email']
+
+    except Exception as e:
+        print(f"Unknown error occurred: {e}")
+        disconnect()
+        return
+
+    print(f"User {user_email} authenticated successfully.")
 
 
 @socketio.on('new_chat_message')
