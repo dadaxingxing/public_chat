@@ -19,7 +19,8 @@ function Chat(){
     const [loading, setLoading] = useState(false);
     const socket = io('http://127.0.0.1:5000')
     const scrollRef = useRef(null);
-
+    const [messageSendStatus, setMessageSendStatus] = useState(true);
+    
 
     // get more message history from backend based on page number
     const loadMoreMessagesHistory = async () => {
@@ -74,7 +75,8 @@ function Chat(){
     
     // handle submitting a message
     const handleSubmitClick = async () => {
-        if (inputValue.trim() !== ''){
+        if (inputValue.trim() !== '' && messageSendStatus){
+            setMessageSendStatus(false);
 
             try {
                 await axiosInstance.post('/api/chat', {"Message": inputValue});
@@ -83,7 +85,9 @@ function Chat(){
 
             } catch (error) {
                 console.log('Error sending message:', error)
-            }           
+            } finally {
+                setMessageSendStatus(true);
+            }       
             
             setInputValue('');
         }
