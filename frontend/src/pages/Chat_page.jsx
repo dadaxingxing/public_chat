@@ -14,19 +14,17 @@ import {io} from 'socket.io-client';
 function Chat(){
     const [inputValue, setInputValue] = useState('');
     const [messages, setMessages] = useState([]);
-    const messageBox = useRef(null);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
-    const userId = localStorage.getItem('userId');
     const [loading, setLoading] = useState(false);
     const socket = io('http://127.0.0.1:5000')
-    
-    
+    const scrollRef = useRef(null);
+
+
     // get more message history from backend based on page number
     const loadMoreMessagesHistory = async () => {
         if (!hasMore || loading) return;
-        
-        setLoading(true);
+
         try {
             const response = await axiosInstance.get('/api/history', {params: {page}});
 
@@ -38,7 +36,7 @@ function Chat(){
             setMessages(prevMessages => [
                 ...response.data.map(newMessage => ({
                     text: newMessage.message,
-                    isSender: userId === newMessage.userId
+                    isSender: localStorage.getItem('userId') === newMessage.userId
                 })),
                 
                 ...prevMessages
@@ -57,9 +55,10 @@ function Chat(){
     
     // Listens when user scrolls to top
     const handleScroll = (e) => {
-        const bottom = e.target.scrollTop === 0;
-        if (bottom){
+        const top = e.target.scrollTop === 0;
+        if (top && !loading){
             console.log('trying to load more messages!!')
+            setLoading(true);
             loadMoreMessagesHistory();
         }   
     };
@@ -78,7 +77,7 @@ function Chat(){
             try {
                 await axiosInstance.post('/api/chat', {"Message": inputValue});
                 
-                socket.emit('new_chat_message', {'message': inputValue, 'userId':userId});
+                socket.emit('new_chat_message', {'message': inputValue, 'userId':localStorage.getItem('userId')});
 
             } catch (error) {
                 console.log('Error sending message:', error)
@@ -92,20 +91,11 @@ function Chat(){
     
     // handle getting inital message history
     useEffect(() => {
-        const fetchMessages = async () => {
-            await loadMoreMessagesHistory();
-
-            setTimeout(() => {
-                messageBox.current.scrollTop = messageBox.current.scrollHeight;
-            }, 500);
-        };
-
-        fetchMessages();
+        loadMoreMessagesHistory();
 
         
         const handleMessage = (data) => {
-            setMessages((prevMessages) => [...prevMessages, { text: data.message, isSender: data.userId === userId}])
-            messageBox.current.scrollTop = messageBox.current.scrollHeight;
+            setMessages((prevMessages) => [...prevMessages, { text: data.message, isSender: data.userId === localStorage.getItem('userId')}])
         };
         
         socket.on('new_chat_message', handleMessage);
@@ -116,6 +106,12 @@ function Chat(){
         };
     }, []);
 
+
+    useEffect(() => {
+        if (!loading){
+            scrollRef.current?.scrollIntoView({ behavior: 'smooth'});
+        }
+    }, [messages, loading]);
 
     return (
         <div className='container-fluid'>
@@ -128,7 +124,7 @@ function Chat(){
             {/* Displays the message board */}
             <div className='row'>
                 <div className='col-12 '>
-                    <div className='input_container mx-auto' onScroll={handleScroll} ref={messageBox}>
+                    <div className='input_container mx-auto' onScroll={handleScroll} >
                         {messages.map((message, index) => (
                             <Message
                                 text={message.text}
@@ -136,6 +132,7 @@ function Chat(){
                                 key={index}
                             />
                         ))}
+                        <div ref={scrollRef}></div>
                     </div>
                 </div>
             </div>
