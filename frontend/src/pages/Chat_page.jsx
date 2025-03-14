@@ -102,7 +102,6 @@ function Chat(){
     useEffect(() => {
         loadMoreMessagesHistory();
 
-        
         const handleMessage = (data) => {
             setMessages((prevMessages) => [...prevMessages, { text: data.message, isSender: data.userId === localStorage.getItem('userId')}])
         };
@@ -127,6 +126,8 @@ function Chat(){
         setLoading(false);
     }, [messages]);
 
+
+
     return (
         <div className='container-fluid'>
             <div className='row'>
@@ -137,7 +138,7 @@ function Chat(){
 
             {/* Displays the message board */}
             <div className='row'>
-                <div className='col-12 '>
+                <div className='col-12'>
                     <div className='input_container mx-auto' onScroll={handleScroll} >
                         {messages.map((message, index) => (
                             <Message
@@ -146,6 +147,7 @@ function Chat(){
                                 key={index}
                             />
                         ))}
+                        
                         <div ref={scrollRef}></div>
                     </div>
                 </div>

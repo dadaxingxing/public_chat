@@ -158,6 +158,8 @@
     overflow-wrap: break-word;
     white-space: normal;
     max-width: 35%;
+    border-radius: 10px;
+    
 } 
 
 .message_box_sender {
