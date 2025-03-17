@@ -40,9 +40,10 @@ function Chat(){
             }
             
             setMessages(prevMessages => [
-                ...response.data.map(newMessage => ({
-                    text: newMessage.message,
-                    isSender: localStorage.getItem('userId') === newMessage.userId
+                ...response.data.map(data => ({
+                    text: data.message,
+                    isSender: localStorage.getItem('userId') === data.userId,
+                    user: data.userId
                 })),
                 
                 ...prevMessages
@@ -103,7 +104,10 @@ function Chat(){
         loadMoreMessagesHistory();
 
         const handleMessage = (data) => {
-            setMessages((prevMessages) => [...prevMessages, { text: data.message, isSender: data.userId === localStorage.getItem('userId')}])
+            setMessages((prevMessages) => [...prevMessages, { 
+                user: data.userId, 
+                text: data.message, 
+                isSender: data.userId === localStorage.getItem('userId')}])
         };
         
         socket.on('new_chat_message', handleMessage);

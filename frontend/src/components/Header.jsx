@@ -1,6 +1,5 @@
 import '../App.css';
 import Active from './activeButton.jsx';
-import Referral from './referralButton.jsx';
 import React from 'react';
 
 function Header() {
@@ -9,10 +8,9 @@ function Header() {
         <div className='logo'>
           BlorpChat.gg
         </div>
-        <div className='header_buttons_container d-flex align-items-center'>
+        {/* <div className='header_buttons_container d-flex align-items-center'>
           <Active/>
-          <Referral/>
-        </div>
+        </div> */}
 
       </div>  
     );
