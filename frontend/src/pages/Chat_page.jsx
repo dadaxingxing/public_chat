@@ -149,6 +149,7 @@ function Chat(){
                                 text={message.text}
                                 isSender={message.isSender}
                                 key={index}
+                                user={message.user}
                             />
                         ))}
                         

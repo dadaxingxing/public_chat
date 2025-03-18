@@ -157,7 +157,7 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: normal;
-    max-width: 35%;
+    max-width: 100%;
     border-radius: 10px;
     
 } 
@@ -171,6 +171,19 @@
     background-color: var(--darker-main-color);
     color: var(--side-color);
     
+}
+
+
+.message_box_receiver_name {
+    text-align: left;
+}
+
+.message_box_sender_name {
+    text-align: right;
+}
+
+.message_box_username {
+    font-size: 10px;
 }
 
 .greenStatus {
