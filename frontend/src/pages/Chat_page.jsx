@@ -168,7 +168,7 @@ function Chat(){
                 </div>
             </div>
 
-            <div className='row justify-content-center'>
+            <div className='row justify-content-center pt-4'>
                 <div className='col-4 '>
                     {/* Displays the input text button */}
                     <InputField 

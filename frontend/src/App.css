@@ -38,6 +38,7 @@
 
   .sendMessageContainer {
     height: 250%;
+    
   }
 
 
@@ -150,6 +151,14 @@
     color: var(--side-color);
     font-weight: 600;
     font-size: 1.83vh;
+}
+
+.popup_container {
+    background-color: var(--side-color);
+    width: 25vw;
+    height: 25vh;
+    border-radius: 10px;
+    color: var(--darker-main-color);
 }
 
 .message_box {
