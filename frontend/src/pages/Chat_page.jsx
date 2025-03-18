@@ -27,8 +27,6 @@ function Chat(){
         }
     });
 
-    
-    
 
     // get more message history from backend based on page number
     const loadMoreMessagesHistory = async () => {
@@ -84,6 +82,7 @@ function Chat(){
     // handle submitting a message
     const handleSubmitClick = async () => {
         if (inputValue.trim() !== '' && messageSendStatus){
+            setShowLoading(true);
             setMessageSendStatus(false);
 
             try {
@@ -95,6 +94,7 @@ function Chat(){
                 console.log('Error sending message:', error)
             } finally {
                 setMessageSendStatus(true);
+                setShowLoading(false);
             }       
             
             setInputValue('');

@@ -8,9 +8,9 @@ function Header() {
         <div className='logo'>
           BlorpChat.gg
         </div>
-        {/* <div className='header_buttons_container d-flex align-items-center'>
+        <div className='header_buttons_container d-flex align-items-center'>
           <Active/>
-        </div> */}
+        </div>
 
       </div>  
     );

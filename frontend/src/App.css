@@ -2,6 +2,7 @@
     --main-color: #54494B; 
     --side-color: #F1F7ED;
     --darker-main-color: #413c3c;
+    --even-darker-main-color: #2e2a2a;
     --green: #91C7B1;
     --red: #B33951;
     --normal: 500;
@@ -163,12 +164,12 @@
 } 
 
 .message_box_sender {
-    background-color: var(--side-color);
-    color: var(--darker-main-color);
+    background-color: var(--darker-main-color);
+    color: var(--side-color);
 }
 
 .message_box_receiver {
-    background-color: var(--darker-main-color);
+    background-color: var(--even-darker-main-color);
     color: var(--side-color);
     
 }
