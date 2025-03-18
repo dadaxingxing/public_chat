@@ -19,12 +19,15 @@ function Chat(){
     const [loading, setLoading] = useState(false);
     const scrollRef = useRef(null);
     const [messageSendStatus, setMessageSendStatus] = useState(true);
+    const [showLoading, setShowLoading] = useState(false);
+
     const socket = io('http://127.0.0.1:5000', {
         extraHeaders: {
             'Token': localStorage.getItem('Token')
         }
     });
 
+    
     
 
     // get more message history from backend based on page number
@@ -142,6 +145,13 @@ function Chat(){
 
             {/* Displays the message board */}
             <div className='row'>
+                {showLoading && (
+                    <div className='col-12 d-flex justify-content-center position-absolute'>
+                        <div className='spinner-border' role='status' style={{ zIndex: 1000 }} />
+                    </div>
+                )}
+
+
                 <div className='col-12'>
                     <div className='input_container mx-auto' onScroll={handleScroll} >
                         {messages.map((message, index) => (
