@@ -129,7 +129,23 @@ def history(user):
     except Exception as e:
         return jsonify({'error': f'{e}'}), 400
 
+@app.route('/api/admin', methods=['POST'])
+@auth
+def bug_report(user):
+    data = request.json
+    message = data['Message']
 
+    if not user or not message:
+        return jsonify({'error': 'Did not receive feature/bug requests!'}), 400
+    
+    message_data = {
+        'userId': user,
+        'message': message,
+        'timestamp': datetime.now(timezone.utc).isoformat()
+    }
+    
+    db.features.insert_one(message_data)
+    return jsonify({'Message': 'bug/feature requests successfully sent!'}), 200
 
 
 # remember to delete the line below
