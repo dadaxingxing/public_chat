@@ -147,6 +147,14 @@ def bug_report(user):
     db.features.insert_one(message_data)
     return jsonify({'Message': 'bug/feature requests successfully sent!'}), 200
 
+@app.route('/secret/admin', methods=['GET'])
+def admin_panel():
+    try:
+        messages = list(db.features.find({}))
+        return dumps(messages), 200
+    except Exception as e:
+        return jsonify({'error': f'{e}'}), 500
+
 
 # remember to delete the line below
 if __name__ == '__main__':
