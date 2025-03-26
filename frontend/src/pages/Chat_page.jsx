@@ -153,7 +153,7 @@ function Chat(){
 
 
                 <div className='col-12'>
-                    <div className='input_container mx-auto' onScroll={handleScroll} >
+                    <div className='input_container  mx-auto' onScroll={handleScroll} >
                         {messages.map((message, index) => (
                             <Message
                                 text={message.text}
@@ -169,7 +169,7 @@ function Chat(){
             </div>
 
             <div className='row justify-content-center pt-4'>
-                <div className='col-4 '>
+                <div className='col-8 col-md-4'>
                     {/* Displays the input text button */}
                     <InputField 
                         inputValue={inputValue}

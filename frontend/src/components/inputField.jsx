@@ -3,7 +3,7 @@ import React from 'react';
 
 function InputField( { inputValue, onInputChange, onButtonClick} ) {
     return (
-        <div className='position-relative sendMessageContainer'>
+        <div className='position-relative sendMessageContainer '>
             <input
             className='inputField'
             type="text"
