@@ -14,11 +14,11 @@
     /* border-width: 0px; */
     background-color: var(--side-color);
     color: var(--main-color);
-    font-size: 40px;
+    font-size: 4vw;
     font-weight: 600;
     border-radius: 7px;
-    width: 200px;
-    height: 75px;
+    width: 15vw;
+    height: calc(15vw * 0.375);
     border: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -49,7 +49,7 @@
 }
 
 .lower_container {
-    gap: 16px;
+    gap: 4px;
 }
 
 .lower_underline {
