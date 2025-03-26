@@ -155,11 +155,3 @@ def admin_panel():
     except Exception as e:
         return jsonify({'error': f'{e}'}), 500
 
-
-# remember to delete the line below
-if __name__ == '__main__':
-    socketio.run(app, debug=True)
-
-
-
-
