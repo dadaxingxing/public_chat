@@ -1,0 +1,43 @@
+services:
+  frontend:
+    build: ./frontend
+    image: public_chat-frontend    
+    container_name: frontend_c
+    networks:
+      - public_chat
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    stdin_open: true
+    tty: true
+
+  backend:
+    build: ./backend
+    image: public_chat-backend
+    container_name: backend_c
+    networks:
+      - public_chat    
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    env_file:
+      - ./backend/login.env
+    environment:
+      - MONGO_URI=mongodb://db:27017/public_chat
+      - FLASK_DEBUG=False
+
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/do
+    networks:
+      - public_chat
+
+volumes:
+  mongo-data:
+networks:
+  public_chat:
