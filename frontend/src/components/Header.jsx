@@ -1,7 +1,6 @@
 import '../App.css';
 import Active from './activeButton.jsx';
 import React from 'react';
-import Popup from 'reactjs-popup';
 
 
 function Header() {

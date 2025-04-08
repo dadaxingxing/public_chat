@@ -93,7 +93,6 @@
     font-size: 100%; 
     /* border: .01em solid var(--side-color); */
     padding-left: 1.5em;
-    
 }
 
 
@@ -146,6 +145,7 @@
 
 .header_container {
     height: 6vh;
+    min-height: 40px;
     padding-left: 0;
     padding-right: 0;
 }
@@ -264,11 +264,18 @@
 }
 
 @media (max-width: 767px) {
-    .sendMessageButton{
-        display: none;
-    }
-
     .status_container{
         display: none;
     }
+    .inputField::placeholder{
+        font-size: 2vh;
+    }
+    .inputField{
+        font-size: 2vh;
+    }
+
+    .sendMessageButton{
+        aspect-ratio: .75;
+    }
+
 }

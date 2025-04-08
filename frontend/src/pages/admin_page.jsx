@@ -21,8 +21,6 @@ function Admin(){
 
         fetchMessage();
 
-
-
     }, []);
 
     return (

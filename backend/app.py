@@ -1,5 +1,5 @@
 from flask import Flask, request, session, jsonify
-from flask_socketio import disconnect, join_room, leave_room, send, SocketIO, emit
+from flask_socketio import disconnect, SocketIO, emit
 from pymongo import MongoClient
 from datetime import datetime, timezone
 from dotenv import dotenv_values
@@ -10,10 +10,14 @@ from flask_cors import CORS
 from bson.json_util import dumps
 import os
 
+# google_client_id = dotenv_values('login.env')['CLIENT_ID']
+# mongo_url = os.getenv("MONGO_URI", "mongodb://db:27017/public_chat")
+# client = MongoClient(mongo_url)
+# db = client.get_database()
+
 google_client_id = dotenv_values('login.env')['CLIENT_ID']
-mongo_url = os.getenv("MONGO_URI", "mongodb://db:27017/public_chat")
-client = MongoClient(mongo_url)
-db = client.get_database()
+client = MongoClient('mongodb://localhost:27017')
+db = client.public_chat
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = dotenv_values('login.env')['SECRET_KEY']
@@ -95,11 +99,14 @@ def handle_sending_new_message(data):
 @app.route('/api/chat', methods=['POST'])
 @auth
 def chat(user):
+
     data = request.json
     message = data['Message']
 
+    
     if not user or not message:
         return jsonify({'error': 'Did not receive userID or message'}), 400
+    
 
     message_data = {
         'userId': user,
@@ -157,4 +164,5 @@ def admin_panel():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    debug_mode = os.getenv('FLASK_DEBUG', 'False') == 'True'
+    app.run(debug=debug_mode, host='0.0.0.0')
