@@ -9,7 +9,7 @@ import {io} from 'socket.io-client';
 // remember to delete the below line, it's for debugging
 // localStorage.clear();    
 // console.log(localStorage.getItem('userId'));
-
+// console.log(process.env.REACT_APP_BASE_BACKEND_URL)
 
 function Chat(){
     const [inputValue, setInputValue] = useState('');
@@ -21,7 +21,7 @@ function Chat(){
     const [messageSendStatus, setMessageSendStatus] = useState(true);
     const [showLoading, setShowLoading] = useState(false);
 
-    const socket = io('http://127.0.0.1:5000', {
+    const socket = io(import.meta.env.VITE_BASE_BACKEND_URL, {
         extraHeaders: {
             'Token': localStorage.getItem('Token')
         }
