@@ -8,7 +8,7 @@ function Admin(){
     useEffect(() => {
         const fetchMessage = async () =>{
             try {   
-                const response = await axiosInstance.get('/secret/admin');
+                const response = await axiosInstance.get('/api/secret/admin');
                 console.log(response.data);
                 const modifiedData = response.data.map(item => ({
                     message: item.message

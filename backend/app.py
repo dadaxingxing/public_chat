@@ -147,7 +147,7 @@ def bug_report(user):
     db.features.insert_one(message_data)
     return jsonify({'Message': 'bug/feature requests successfully sent!'}), 200
 
-@app.route('/secret/admin', methods=['GET'])
+@app.route('/api/secret/admin', methods=['GET'])
 def admin_panel():
     try:
         messages = list(db.features.find({}))
@@ -157,5 +157,4 @@ def admin_panel():
 
 
 if __name__ == '__main__':
-    debug_mode = os.getenv('FLASK_DEBUG', 'False') == 'True'
-    app.run(debug=debug_mode, host='0.0.0.0')
+    app.run(debug=True)
