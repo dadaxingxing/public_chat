@@ -11,13 +11,10 @@ from bson.json_util import dumps
 import os
 
 # google_client_id = dotenv_values('login.env')['CLIENT_ID']
-# mongo_url = os.getenv("MONGO_URI", "mongodb://db:27017/public_chat")
-# client = MongoClient(mongo_url)
-# db = client.get_database()
+mongo_url = os.getenv("MONGO_URI", "mongodb://db:27017/public_chat")
+client = MongoClient(mongo_url)
+db = client.get_database()
 
-google_client_id = dotenv_values('login.env')['CLIENT_ID']
-client = MongoClient('mongodb://localhost:27017')
-db = client.public_chat
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = dotenv_values('login.env')['SECRET_KEY']
@@ -136,33 +133,34 @@ def history(user):
     except Exception as e:
         return jsonify({'error': f'{e}'}), 400
 
-@app.route('/api/admin', methods=['POST'])
+@app.route('/api/admin', methods=['POST', 'GET'])
 @auth
 def bug_report(user):
-    data = request.json
-    message = data['Message']
+    if request.method == 'POST':
+        data = request.json
+        message = data['Message']
 
-    if not user or not message:
-        return jsonify({'error': 'Did not receive feature/bug requests!'}), 400
-    
-    message_data = {
-        'userId': user,
-        'message': message,
-        'timestamp': datetime.now(timezone.utc).isoformat()
-    }
-    
-    db.features.insert_one(message_data)
-    return jsonify({'Message': 'bug/feature requests successfully sent!'}), 200
-
-@app.route('/api/secret/admin', methods=['GET'])
-def admin_panel():
-    try:
-        messages = list(db.features.find({}))
-        return dumps(messages), 200
-    except Exception as e:
-        return jsonify({'error': f'{e}'}), 500
+        if not user or not message:
+            return jsonify({'error': 'Did not receive feature/bug requests!'}), 400
+        
+        message_data = {
+            'userId': user,
+            'message': message,
+            'timestamp': datetime.now(timezone.utc).isoformat()
+        }
+        
+        db.features.insert_one(message_data)
+        return jsonify({'Message': 'bug/feature requests successfully sent!'}), 200
+    elif request.method == 'GET':
+        try:
+            messages = list(db.features.find({}))
+            return dumps(messages), 200
+        except Exception as e:
+            return jsonify({'error': f'{e}'}), 500
+    else:
+        return 'Method not allowed!', 405
 
 
 if __name__ == '__main__':
-    debug_mode = os.getenv('FLASK_DEBUG', 'False') == 'True'
-    app.run(debug=debug_mode, host='0.0.0.0')
+     debug_mode = os.getenv('FLASK_DEBUG', 'False') == 'True'
+     app.run(debug=debug_mode, host='0.0.0.0')
