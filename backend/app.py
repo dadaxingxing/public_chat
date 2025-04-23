@@ -56,7 +56,7 @@ def auth(func):
 
 @socketio.on('connect')
 def handle_connect():
-    token = request.headers.get('Token')
+    token = request.headers.get('token')
     if not token:
         print('Token is  missing')
         disconnect()
@@ -163,4 +163,4 @@ def bug_report(user):
 
 if __name__ == '__main__':
      debug_mode = os.getenv('FLASK_DEBUG', 'False') == 'True'
-     app.run(debug=debug_mode, host='0.0.0.0')
+     socketio.run(app, host='0.0.0.0', port=5000, debug=debug_mode)

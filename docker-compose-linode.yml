@@ -31,7 +31,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongo-data:/data/do
+      - mongo-data:/data/db
     networks:
       - public_chat
 

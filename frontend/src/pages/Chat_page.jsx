@@ -23,8 +23,10 @@ function Chat(){
     const [showLoading, setShowLoading] = useState(false);
 
     const socket = io(import.meta.env.VITE_BASE_BACKEND_URL, {
-        extraHeaders: {
-            'Token': localStorage.getItem('Token')
+        transports: ['websocket'],
+        secure: true,
+        query: {
+            token: localStorage.getItem('Token')
         }
     });
 
