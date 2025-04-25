@@ -1,3 +1,6 @@
+import eventlet
+eventlet.monkey_patch()
+
 from flask import Flask, request, session, jsonify
 from flask_socketio import disconnect, SocketIO, emit
 from pymongo import MongoClient
@@ -10,19 +13,23 @@ from flask_cors import CORS
 from bson.json_util import dumps
 import os
 
-# google_client_id = dotenv_values('login.env')['CLIENT_ID']
+# way to access database production 
 mongo_url = os.getenv("MONGO_URI", "mongodb://db:27017/public_chat")
 client = MongoClient(mongo_url)
 db = client.get_database()
 
 
+# way to access database local
+# client = MongoClient('mongodb://127.0.0.1:27017')
+# db = client.public_chat
+
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = dotenv_values('login.env')['SECRET_KEY']
-socketio = SocketIO(app, cors_allowed_origins="*")
-
 
 # allowing access at specific host
 CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
 
 
 def auth(func):
@@ -56,7 +63,7 @@ def auth(func):
 
 @socketio.on('connect')
 def handle_connect():
-    token = request.headers.get('token')
+    token = request.args.get('token')
     if not token:
         print('Token is  missing')
         disconnect()
@@ -104,7 +111,7 @@ def chat(user):
     if not user or not message:
         return jsonify({'error': 'Did not receive userID or message'}), 400
     
-
+    
     message_data = {
         'userId': user,
         'message': message,
@@ -120,6 +127,7 @@ def chat(user):
 def history(user):
     try:
         incoming_data = request.args
+        
         page = int(incoming_data.get('page', 1))
         limit = int(incoming_data.get('limit', 25))
         
@@ -131,6 +139,8 @@ def history(user):
         return dumps(messages[::-1]), 200
     
     except Exception as e:
+        print('fetching did not work')
+        print(f'error: {e}')
         return jsonify({'error': f'{e}'}), 400
 
 @app.route('/api/admin', methods=['POST', 'GET'])
@@ -162,5 +172,5 @@ def bug_report(user):
 
 
 if __name__ == '__main__':
-     debug_mode = os.getenv('FLASK_DEBUG', 'False') == 'True'
-     socketio.run(app, host='0.0.0.0', port=5000, debug=debug_mode)
+    # socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, port=5000, debug=True)

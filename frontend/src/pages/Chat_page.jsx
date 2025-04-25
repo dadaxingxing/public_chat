@@ -91,7 +91,8 @@ function Chat(){
             try {
                 await axiosInstance.post('/api/chat', {"Message": inputValue});
                 
-                socket.emit('new_chat_message', {'message': inputValue, 'userId':localStorage.getItem('userId')});
+               socket .emit('new_chat_message', {'message': inputValue, 'userId':localStorage.getItem('userId')});
+                console.log('emit sent correctly!!');
 
             } catch (error) {
                 console.log('Error sending message:', error)
@@ -99,7 +100,7 @@ function Chat(){
                 setMessageSendStatus(true);
                 setShowLoading(false);
             }       
-            
+
             setInputValue('');
         }
     }; 
@@ -110,6 +111,7 @@ function Chat(){
         loadMoreMessagesHistory();
 
         const handleMessage = (data) => {
+            console.log('Receive new message')
             setMessages((prevMessages) => [...prevMessages, { 
                 user: data.userId, 
                 text: data.message, 
